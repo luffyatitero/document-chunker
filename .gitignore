@@ -192,3 +192,38 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# TypeScript
+*.tsbuildinfo
+
+# React build output
+build/
+*.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# VS Code settings (if not already ignored)
+.vscode/
+
+# Coverage directory for tools like Jest
+coverage/
+
+# Storybook build output
+.out/
+storybook-static/
+
+# Misc
+.DS_Store
+*.log
