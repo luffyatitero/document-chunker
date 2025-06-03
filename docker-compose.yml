@@ -6,6 +6,8 @@ services:
     ports:
       - "3000:3000"
     command: "npm start"
+    volumes:
+      - "./services/frontend:/app"
   
   document-service:
     build:
@@ -13,3 +15,5 @@ services:
       dockerfile: services/document-service/Dockerfile
     ports:
       - "8000:8000"
+    volumes:
+      - "./services/document-service/:/app"
