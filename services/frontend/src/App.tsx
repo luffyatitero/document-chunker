@@ -1,23 +1,26 @@
-import React from "react";
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
 
-import "./App.css"; // Ensure you have a CSS file for global styles
-import "./index.css"; // Ensure you have a CSS file for Tailwind styles
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import TopNav from "./components/topNavComponent";
-import HomePage from "./pages/HomePage";
-import DocumentDetailPage from "./pages/DocumentDetailPage";
-
-const App: React.FC = () => (
-  <Router>
-    <TopNav />
-    <div className="pt-12 bg-gray-50 min-h-screen max-w-6xl mx-auto">
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/document/:id" element={<DocumentDetailPage />} />
-      </Routes>
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edited <code>src/App.tsx</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
     </div>
-  </Router>
-);
+  );
+}
 
 export default App;
