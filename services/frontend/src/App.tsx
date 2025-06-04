@@ -14,7 +14,7 @@ const App: React.FC = () => (
     <div className="pt-12 bg-gray-50 min-h-screen max-w-6xl mx-auto">
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/document/:id" element={<DocumentDetailPage />} />
+        <Route path="/document/:documentId" element={<DocumentDetailPage />} />
       </Routes>
     </div>
   </Router>

@@ -1,81 +1,96 @@
 import React from "react";
 
 interface ParameterFormProps {
-  values: {
-    chunkSize: number | "";
-    chunkQty: number | "";
-    param3?: string;
-    param4?: string;
-    param5?: string;
-  };
+  values: any;
   onChange: (field: string, value: any) => void;
+  splitterTypes?: any[];
+  lengthFunctions?: any[];
+  recommendation?: any;
+  onApplyRecommendation?: () => void;
 }
 
-const ParameterForm: React.FC<ParameterFormProps> = ({ values, onChange }) => (
-  <div className="border rounded p-4 mt-4">
-    <div className="font-bold mb-2">Set Parameters</div>
-    <div className="mb-2 flex items-center">
-      <label className="w-32">Chunk Size</label>
-      <select
-        className="border rounded px-2 py-1 flex-1"
-        value={values.chunkSize}
-        onChange={e => onChange("chunkSize", Number(e.target.value))}
-      >
-        <option value="">Select</option>
-        {[500, 1000, 1500, 2000].map(size => (
-          <option key={size} value={size}>{size}</option>
-        ))}
-      </select>
-    </div>
-    <div className="mb-2 flex items-center">
-      <label className="w-32">Chunk Qty.</label>
-      <select
-        className="border rounded px-2 py-1 flex-1"
-        value={values.chunkQty}
-        onChange={e => onChange("chunkQty", Number(e.target.value))}
-      >
-        <option value="">Select</option>
-        {[5, 10, 20, 50].map(qty => (
-          <option key={qty} value={qty}>{qty}</option>
-        ))}
-      </select>
-    </div>
-    <div className="mb-2 flex items-center">
-      <label className="w-32">Parameter 3</label>
-      <select
-        className="border rounded px-2 py-1 flex-1"
-        value={values.param3 || ""}
-        onChange={e => onChange("param3", e.target.value)}
-      >
-        <option value="">Select</option>
-        <option value="A">A</option>
-        <option value="B">B</option>
-      </select>
-    </div>
-    <div className="mb-2 flex items-center">
-      <label className="w-32">Parameter 4</label>
-      <select
-        className="border rounded px-2 py-1 flex-1"
-        value={values.param4 || ""}
-        onChange={e => onChange("param4", e.target.value)}
-      >
-        <option value="">Select</option>
-        <option value="X">X</option>
-        <option value="Y">Y</option>
-      </select>
-    </div>
-    <div className="mb-2 flex items-center">
-      <label className="w-32">Parameter 5</label>
-      <select
-        className="border rounded px-2 py-1 flex-1"
-        value={values.param5 || ""}
-        onChange={e => onChange("param5", e.target.value)}
-      >
-        <option value="">Select</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-      </select>
-    </div>
+const ParameterForm: React.FC<ParameterFormProps> = ({
+  values,
+  onChange,
+  splitterTypes = [],
+  lengthFunctions = [],
+  recommendation,
+  onApplyRecommendation,
+}) => (
+  <div>
+    {recommendation && (
+      <div className="mb-2 p-2 bg-green-50 border border-green-300 rounded">
+        <div className="font-semibold text-green-700">Recommended for this file:</div>
+        <div>Splitter: <b>{recommendation.splitter_type}</b></div>
+        <div>Chunk Size: <b>{recommendation.chunk_size}</b></div>
+        <div>Chunk Overlap: <b>{recommendation.chunk_overlap}</b></div>
+        <div>Length Function: <b>{recommendation.length_function}</b></div>
+        {recommendation.separators && (
+          <div>Separators: <b>{Array.isArray(recommendation.separators) ? recommendation.separators.join(", ") : recommendation.separators}</b></div>
+        )}
+        <button
+          className="mt-2 px-3 py-1 bg-green-600 text-white rounded"
+          onClick={onApplyRecommendation}
+          type="button"
+        >
+          Apply Recommended
+        </button>
+      </div>
+    )}
+
+    <label className="block mt-2">Splitter Type</label>
+    <select
+      value={values.splitter_type}
+      onChange={e => onChange("splitter_type", e.target.value)}
+      className="w-full border rounded p-1"
+    >
+      <option value="">Select...</option>
+      {splitterTypes.map((type: any) => (
+        <option key={type.type} value={type.type}>
+          {type.name}
+        </option>
+      ))}
+    </select>
+
+    <label className="block mt-2">Separator Type</label>
+    <input
+      type="text"
+      value={values.separator_type}
+      onChange={e => onChange("separator_type", e.target.value)}
+      className="w-full border rounded p-1"
+      placeholder="e.g. \\n or custom"
+      required
+    />
+
+    <label className="block mt-2">Length Function</label>
+    <select
+      value={values.length_function}
+      onChange={e => onChange("length_function", e.target.value)}
+      className="w-full border rounded p-1"
+    >
+      <option value="">Select...</option>
+      {lengthFunctions.map((fn: any) => (
+        <option key={fn.type} value={fn.type}>
+          {fn.name}
+        </option>
+      ))}
+    </select>
+
+    <label className="block mt-2">Chunk Size</label>
+    <input
+      type="number"
+      value={values.chunk_size}
+      onChange={e => onChange("chunk_size", Number(e.target.value))}
+      className="w-full border rounded p-1"
+    />
+
+    <label className="block mt-2">Chunk Overlap</label>
+    <input
+      type="number"
+      value={values.chunk_overlap}
+      onChange={e => onChange("chunk_overlap", Number(e.target.value))}
+      className="w-full border rounded p-1"
+    />
   </div>
 );
 
