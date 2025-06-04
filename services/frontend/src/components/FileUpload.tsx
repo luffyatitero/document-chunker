@@ -3,17 +3,11 @@ import React, { useRef } from "react";
 interface FileUploadProps {
   onFileSelected: (file: File) => void;
   disabled?: boolean;
+  selectedFile?: File;
 }
 
-const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, disabled }) => {
+const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, disabled, selectedFile }) => {
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      onFileSelected(e.dataTransfer.files[0]);
-    }
-  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -22,30 +16,29 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileSelected, disabled }) => 
   };
 
   return (
-    <div
-      className="border border-dashed border-gray-400 rounded p-6 text-center bg-gray-50"
-      onDrop={handleDrop}
-      onDragOver={e => e.preventDefault()}
-      style={{ minHeight: 100 }}
-    >
-      <div className="mb-2">Drag and drop file here</div>
-      <div className="mb-2">-or-</div>
-      <button
-        className="bg-gray-200 px-4 py-1 rounded"
-        onClick={() => inputRef.current?.click()}
-        disabled={disabled}
-        type="button"
-      >
-        Browse File
-      </button>
+    <div className="border border-dashed border-gray-500 rounded p-4 text-center">
+      <div>
+        <button
+          type="button"
+          className="bg-gray-200 px-4 py-2 rounded"
+          onClick={() => inputRef.current?.click()}
+          disabled={disabled}
+        >
+          Browse File
+        </button>
+      </div>
       <input
-        ref={inputRef}
         type="file"
+        ref={inputRef}
         className="hidden"
         onChange={handleFileChange}
         disabled={disabled}
       />
-      <div className="text-xs text-gray-500 mt-2">File Size Should Not Exceed 4MB</div>
+      {selectedFile && (
+        <div className="mt-2 text-gray-600">
+          Selected: <span className="font-medium">{selectedFile.name}</span>
+        </div>
+      )}
     </div>
   );
 };

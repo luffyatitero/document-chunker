@@ -25,7 +25,7 @@ class DocumentService:
     ) -> Document:
         """Process uploaded document and create chunks"""
 
-        # Create document record
+        # Create document record with file_path set
         document = Document(
             filename=filename,
             original_filename=original_filename,
@@ -82,6 +82,7 @@ class DocumentService:
             document.processed_at = datetime.utcnow()
 
             self.db.commit()
+            self.db.refresh(document)  # <-- Refresh to ensure file_path and all fields are up-to-date
             return document
 
         except Exception as e:

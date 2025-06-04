@@ -24,7 +24,6 @@ router = APIRouter()
 UPLOAD_DIR = Path("uploads")
 UPLOAD_DIR.mkdir(exist_ok=True)
 
-
 @router.post("/documents/upload", response_model=DocumentResponse)
 async def upload_document(
     file: UploadFile = File(...),
@@ -76,6 +75,7 @@ async def upload_document(
             original_filename=document.original_filename,
             file_size=document.file_size,
             content_type=document.content_type,
+            file_path=str(file_path),
             file_extension=document.file_extension,
             content_length=document.content_length,
             total_chunks=document.total_chunks,
@@ -90,6 +90,7 @@ async def upload_document(
         if file_path.exists():
             file_path.unlink()
         raise HTTPException(status_code=500, detail=f"Error processing document: {str(e)}")
+
 
 @router.get("/documents/{document_id}", response_model=DocumentDetailResponse)
 async def get_document_details(document_id: str, db: Session = Depends(get_db)):
@@ -117,6 +118,7 @@ async def get_document_details(document_id: str, db: Session = Depends(get_db)):
         filename=document.filename,
         original_filename=document.original_filename,
         file_size=document.file_size,
+        file_path=document.file_path,
         content_type=document.content_type,
         file_extension=document.file_extension,
         content_length=document.content_length,
@@ -159,7 +161,8 @@ async def list_documents(
             error_message=doc.error_message,
             created_at=doc.created_at,
             updated_at=doc.updated_at,
-            processed_at=doc.processed_at
+            processed_at=doc.processed_at,
+            file_path=doc.file_path
         )
         for doc in documents
     ]
